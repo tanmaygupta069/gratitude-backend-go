@@ -12,9 +12,7 @@ require (
 	google.golang.org/grpc v1.65.0
 )
 
-// require (
-//     github.com/tanmaygupta069/post-service v0.0.0 // remove local path
-// )
+replace github.com/tanmaygupta069/post-service => ../post-service
 
 require (
 	cloud.google.com/go v0.112.1 // indirect
