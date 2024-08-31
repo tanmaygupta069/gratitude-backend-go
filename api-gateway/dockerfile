@@ -1,0 +1,32 @@
+# Use a Go base image
+FROM golang:1.23 AS builder
+
+# Set the Current Working Directory inside the container
+WORKDIR /app/api-gateway
+
+# Copy go mod and sum files
+COPY api-gateway/go.mod api-gateway/go.sum ./
+
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
+
+# Copy the source code into the container
+COPY api-gateway/ .
+
+# Build the Go app
+RUN go build -o api-gateway cmd/main.go
+
+# Start a new stage from scratch
+FROM golang:1.23
+
+# Set the Current Working Directory inside the container
+WORKDIR /app
+
+# Copy the Pre-built binary file from the previous stage
+COPY --from=builder /app/api-gateway/api-gateway .
+
+# Expose port 8080 to the outside world
+EXPOSE 8080
+
+# Command to run the executable
+CMD ["./api-gateway"]

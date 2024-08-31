@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package post;
+
+option go_package = "./";
+
+service PostService {
+    rpc CreatePost (CreatePostRequest) returns (PostResponse);
+    rpc UpdatePost (UpdatePostRequest) returns (PostResponse);
+    rpc DeletePost (DeletePostRequest) returns (DeleteResponse);
+    rpc GetPosts (GetPostsRequest) returns (GetPostsResponse);
+    rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
+}
+
+message Post {
+    string postId = 1;
+    string userId = 2;
+    string content = 3;
+    bool isAnonymous = 4;
+    string timestamp = 5;
+}
+
+message CreatePostRequest {
+    string userId = 1;
+    string content = 2;
+    bool isAnonymous = 3;
+}
+
+message UpdatePostRequest {
+    string postId = 1;
+    string userId = 2;
+    string content = 3;
+    bool isAnonymous = 4;
+}
+
+message DeletePostRequest {
+    string postId = 1;
+    string userId = 2;
+}
+
+message GetPostsRequest {
+    string userIdWhom = 1;
+    string userIdWhose = 2;
+    int32 pageSize = 3;
+    string lastEvaluatedKey = 4;
+}
+
+message GetFeedRequest {
+    string userId = 1;
+    int32 pageSize = 2;
+    string lastEvaluatedKey = 3;
+}
+
+message PostResponse {
+    Post post = 1;
+}
+
+message DeleteResponse {
+    bool success = 1;
+}
+
+message GetPostsResponse {
+    repeated Post posts = 1;
+    string lastEvaluatedKey = 2;
+}
+
+message GetFeedResponse {
+    repeated Post posts = 1;
+    string lastEvaluatedKey = 2;
+}

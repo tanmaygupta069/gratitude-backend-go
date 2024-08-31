@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  post-service:
+    build:
+      context: .  # This assumes both Dockerfiles are in the root directory of your project
+      dockerfile: post-service/Dockerfile
+    env_file:
+      - post-service/.env
+    ports:
+      - "50051:50051"
+    networks:
+      - my-network
+
+  api-gateway:
+    build:
+      context: .  # This assumes both Dockerfiles are in the root directory of your project
+      dockerfile: api-gateway/Dockerfile
+    env_file:
+      - api-gateway/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - post-service
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
