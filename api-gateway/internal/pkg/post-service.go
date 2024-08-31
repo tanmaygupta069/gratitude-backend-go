@@ -17,18 +17,18 @@ import (
 
 var once sync.Once
 
-var postService *PostService
-
-var PostService struct{
+type PostService struct{
 	postClient postpb.PostServiceClient
 	connection *grpc.ClientConn
 }
 
+var postService *PostService
+
 func GetPostServiceClient()(*postpb.PostServiceClient,*grpc.ClientConn){
-	if PostService.postClient==nil{
+	if postService.postClient==nil{
 		InitializePostServiceClient()
 	}
-	return &PostService.postClient,PostService.connection
+	return &postService.postClient,postService.connection
 }
 
 func InitializePostServiceClient(){
